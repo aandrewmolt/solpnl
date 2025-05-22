@@ -629,6 +629,7 @@ function App() {
           <div className="glass-panel p-8">
             <div className="text-center mb-12">
               
+              
               <h2 className="text-4xl font-bold text-white mb-4 flex items-center justify-center">
                 <Rocket className="h-10 w-10 text-orange-500 mr-3" />
                 Vision & Roadmap
@@ -714,7 +715,7 @@ function App() {
 
             <div className="mt-12 text-center">
               <a
-                href="https://x.com/solpnltracker"
+                href="https://x.com/walletiqpro"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-orange-500 hover:text-orange-400 transition-colors font-bold"
