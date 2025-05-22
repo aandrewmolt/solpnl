@@ -6,13 +6,6 @@ import { ParticleBackground } from './components/ParticleBackground';
 import { SolanaChart } from './components/SolanaChart';
 import { TickerBar } from './components/TickerBar';
 
-// Cache management
-const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
-const cache = {
-  tokens: { data: null, timestamp: 0 },
-  traders: { data: {}, timestamp: 0 }
-};
-
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [trendingTokens, setTrendingTokens] = useState([]);
@@ -38,15 +31,6 @@ function App() {
     setTopTraders(null);
 
     try {
-      // Check cache first
-      const now = Date.now();
-      if (cache.traders[token.mint] && 
-          now - cache.traders[token.mint].timestamp < CACHE_DURATION) {
-        setTopTraders(cache.traders[token.mint].data);
-        setIsLoading(false);
-        return;
-      }
-
       const tradersResponse = await fetch(`https://data.solanatracker.io/top-traders/${token.mint}`, {
         headers: {
           'x-api-key': '7f9707ad-e94b-4a13-b7c9-65e48572c79b'
@@ -69,12 +53,6 @@ function App() {
         })
         .sort((a, b) => b.winRate - a.winRate)
         .slice(0, 20);
-
-      // Update cache
-      cache.traders[token.mint] = {
-        data: processedTraders,
-        timestamp: now
-      };
 
       setTopTraders(processedTraders);
       setError(null);
@@ -533,7 +511,7 @@ function App() {
                   Wallet
                 </span>
                 <span className="text-white">
-                  {' '}IQ
+                  {" "}IQ
                 </span>
               </h1>
             </button>
@@ -638,6 +616,7 @@ function App() {
                     >
                       {isLoading ? 'Loading...' : 'Load More Tokens'}
                     </button>
+                  
                   </div>
                 )}
               </>
@@ -646,7 +625,7 @@ function App() {
 
           <div className="glass-panel p-6">
             <h2 className="text-2xl font-semibold text-white mb-6 flex items-center">
-              <TrendingUp className="h-6 w-6 text-orange-500 mr-2" />
+              <TrendingUp className="h-6 w-6 text-orange-500  mr-2" />
               Solana Price Chart
             </h2>
             <SolanaChart />

@@ -171,7 +171,7 @@ export function TokenTable({ tokens, topTraders: initialTopTraders, onWalletClic
                   <div className="text-sm text-white">{formatPrice(token.price, 6)}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`text-sm font-bold ${token.priceChange24h >= 0 ? 'text-orange-500' : 'text-[#FF00FF]'}`}>
+                  <span className={`text-sm font-bold ${token.priceChange24h >= 0 ? 'text-orange-500' : 'text-orange-700'}`}>
                     {token.priceChange24h >= 0 ? '+' : ''}{formatNumber(token.priceChange24h)}%
                   </span>
                 </td>
@@ -205,7 +205,7 @@ export function TokenTable({ tokens, topTraders: initialTopTraders, onWalletClic
               </div>
             ) : error ? (
               <div className="text-center py-12">
-                <p className="text-[#FF00FF]">{error}</p>
+                <p className="text-orange-700">{error}</p>
               </div>
             ) : topTraders.length === 0 ? (
               <div className="text-center py-12 space-y-4">
@@ -247,7 +247,7 @@ export function TokenTable({ tokens, topTraders: initialTopTraders, onWalletClic
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`font-bold ${trader.total >= 0 ? 'text-orange-500' : 'text-[#FF00FF]'}`}>
+                        <span className={`font-bold ${trader.total >= 0 ? 'text-orange-500' : 'text-orange-700'}`}>
                           {formatPrice(trader.total)}
                         </span>
                       </td>
