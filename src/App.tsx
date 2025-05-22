@@ -627,8 +627,7 @@ function App() {
                 {hasMoreTokens && (
                   <div className="text-center mt-6">
                     <button
-                      onClick={handleLoadMoreWal
-letTokens}
+                      onClick={handleLoadMoreWalletTokens}
                       className="glass-button px-6 py-3 text-white font-medium"
                       disabled={isLoading}
                     >
