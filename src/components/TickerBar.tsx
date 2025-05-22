@@ -55,7 +55,7 @@ export function TickerBar({ tokens, onTokenClick }: TickerBarProps) {
                 className="px-4 py-2 flex items-center space-x-3 hover:bg-orange-500/10 transition-colors"
               >
                 <span className="font-medium text-white">{token.symbol}</span>
-                <span className={`${token.priceChange24h >= 0 ? 'text-orange-500' : 'text-[#FF00FF]'}`}>
+                <span className={`${token.priceChange24h >= 0 ? 'text-orange-500' : 'text-orange-700'}`}>
                   {token.priceChange24h >= 0 ? '+' : ''}{token.priceChange24h.toFixed(2)}%
                 </span>
               </button>
