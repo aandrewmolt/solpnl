@@ -6,10 +6,12 @@ import { ParticleBackground } from './components/ParticleBackground';
 import { SolanaChart } from './components/SolanaChart';
 import { TickerBar } from './components/TickerBar';
 
-const CACHE_DURATION = 30 * 60 * 1000;
+// Cache configuration
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 const cache = {
   tokens: { data: null, timestamp: 0 },
-  traders: { data: {}, timestamp: {} }
+  traders: { data: {}, timestamp: {} },
+  wallets: { data: {}, timestamp: {} }
 };
 
 function App() {
@@ -100,61 +102,14 @@ function App() {
 
   const handleWalletClick = async (wallet) => {
     setSearchQuery(wallet);
-    setIsLoading(true);
-    setError('');
-    setWalletStats(null);
-    setIsWalletView(false);
-    setTopTraders(null);
-    setHasMoreTokens(false);
-
-    try {
-      const { summary, tokens, hasMore } = await fetchWalletData(wallet);
-      
-      const tokenAddresses = Object.keys(tokens);
-      if (tokenAddresses.length > 0) {
-        try {
-          const tokenResponse = await fetch('https://data.solanatracker.io/tokens/multi/info', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-api-key': '7f9707ad-e94b-4a13-b7c9-65e48572c79b'
-            },
-            body: JSON.stringify({ tokens: tokenAddresses })
-          });
-          
-          if (tokenResponse.ok) {
-            const tokenData = await tokenResponse.json();
-            if (Array.isArray(tokenData)) {
-              for (const address of tokenAddresses) {
-                const tokenInfo = tokenData.find(t => t.mint === address);
-                if (tokenInfo) {
-                  tokens[address].meta = {
-                    name: tokenInfo.name || 'Unknown Token',
-                    symbol: tokenInfo.symbol || address.slice(0, 8)
-                  };
-                }
-              }
-            }
-          }
-        } catch (error) {
-          console.error('Error fetching token metadata:', error);
-        }
-      }
-
-      setWalletStats({ summary, tokens });
-      setHasMoreTokens(hasMore);
-      setIsWalletView(true);
-    } catch (error) {
-      console.error('Error fetching wallet data:', error);
-      setError(error instanceof Error ? error.message : 'Failed to fetch wallet data');
-    } finally {
-      setIsLoading(false);
-    }
+    await handleSearch(null, wallet);
   };
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) {
+  const handleSearch = async (e, walletOverride = null) => {
+    if (e) e.preventDefault();
+    
+    const query = walletOverride || searchQuery;
+    if (!query.trim()) {
       setError('Please enter a search term');
       return;
     }
@@ -167,8 +122,8 @@ function App() {
     setHasMoreTokens(false);
 
     try {
-      if (/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(searchQuery)) {
-        const { summary, tokens, hasMore } = await fetchWalletData(searchQuery);
+      if (/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(query)) {
+        const { summary, tokens, hasMore } = await fetchWalletData(query);
         setWalletStats({ summary, tokens });
         setHasMoreTokens(hasMore);
         setIsWalletView(true);
@@ -176,7 +131,7 @@ function App() {
         return;
       }
 
-      const searchResponse = await fetch(`https://data.solanatracker.io/search?query=${encodeURIComponent(searchQuery)}`, {
+      const searchResponse = await fetch(`https://data.solanatracker.io/search?query=${encodeURIComponent(query)}`, {
         headers: {
           'x-api-key': '7f9707ad-e94b-4a13-b7c9-65e48572c79b'
         }
@@ -206,7 +161,7 @@ function App() {
       setTrendingTokens(transformedData);
       
       try {
-        const tradersResponse = await fetch(`https://data.solanatracker.io/top-traders/search/${encodeURIComponent(searchQuery)}`, {
+        const tradersResponse = await fetch(`https://data.solanatracker.io/top-traders/search/${encodeURIComponent(query)}`, {
           headers: {
             'x-api-key': '7f9707ad-e94b-4a13-b7c9-65e48572c79b'
           }
@@ -231,6 +186,13 @@ function App() {
     try {
       if (!address.match(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/)) {
         throw new Error('Invalid wallet address format');
+      }
+
+      const now = Date.now();
+      const cacheKey = `${address}-${offset}`;
+      if (cache.wallets.data[cacheKey] && 
+          now - cache.wallets.timestamp[cacheKey] < CACHE_DURATION) {
+        return cache.wallets.data[cacheKey];
       }
 
       const response = await fetch(`https://data.solanatracker.io/pnl/${address}`, {
@@ -363,11 +325,16 @@ function App() {
           : 0
       };
 
-      return {
+      const result = {
         summary,
         tokens: offset === 0 ? pageTokens : { ...walletStats?.tokens, ...pageTokens },
         hasMore: tokenEntries.length > offset + 20
       };
+
+      cache.wallets.data[cacheKey] = result;
+      cache.wallets.timestamp[cacheKey] = now;
+
+      return result;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
