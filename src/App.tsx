@@ -1,3 +1,5 @@
+import { Twitter } from 'lucide-react';
+
 // Previous App.tsx content with updated Twitter link
 const twitterUrl = "https://x.com/walletiqpro";
 
