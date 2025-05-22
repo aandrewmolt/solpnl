@@ -384,7 +384,6 @@ function App() {
     try {
       setIsLoading(true);
       
-      // Use sample data if API fails after retries
       const useSampleData = retryCount >= 3;
       
       if (!useSampleData) {
@@ -396,9 +395,7 @@ function App() {
             headers: {
               'x-api-key': '7f9707ad-e94b-4a13-b7c9-65e48572c79b'
             },
-            // Add cache control to prevent caching issues
             cache: 'no-cache',
-            // Add timeout to prevent hanging requests
             signal: controller.signal
           });
           
@@ -440,14 +437,12 @@ function App() {
           return;
         } catch (error) {
           console.error('Error fetching graduated tokens:', error);
-          // If this is not the final retry, increment retry count
           if (retryCount < 3) {
             setRetryCount(prev => prev + 1);
           }
         }
       }
       
-      // Fallback to sample data if API fails
       const sampleTokens = [
         { name: "Solana", symbol: "SOL", mint: "So11111111111111111111111111111111111111112", price: 143.25, marketCap: 65000000000, priceChange24h: 2.5 },
         { name: "Bonk", symbol: "BONK", mint: "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263", price: 0.00002954, marketCap: 1800000000, priceChange24h: -3.2 },
@@ -494,7 +489,7 @@ function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#0a0a15] text-white">
+    <div className="relative min-h-screen bg-[#0a0a05] text-white">
       <ParticleBackground />
       
       <TickerBar tokens={trendingTokens} onTokenClick={handleTokenClick} />
@@ -507,12 +502,12 @@ function App() {
               className="flex items-center hover:opacity-80 transition-opacity"
             >
               <img 
-                src="/solpnl.png"
-                alt="SolPNL Logo"
-                className="h-14 w-14 text-purple-600 mr-3 -mt-1"
+                src="/walletiq.png"
+                alt="Wallet IQ Logo"
+                className="h-14 w-14 text-orange-600 mr-3 -mt-1"
               />
-              <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 via-purple-500 to-purple-700">
-                SolPNL
+              <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-500 to-orange-700">
+                Wallet IQ
               </h1>
             </button>
           </div>
@@ -528,12 +523,12 @@ function App() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Get PNL of any Solana address"
-              className="w-full px-4 py-4 glass-panel text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 text-center"
+              className="w-full px-4 py-4 glass-panel text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 text-center"
               style={{ textAlign: 'center', paddingLeft: '4rem', paddingRight: '4rem' }}
             />
             <button
               type="submit"
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 text-purple-500 hover:text-purple-400 transition-colors"
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 text-orange-500 hover:text-orange-400 transition-colors"
             >
               <Search className="h-5 w-5" />
             </button>
@@ -544,21 +539,21 @@ function App() {
           <div className="hidden md:grid md:grid-cols-3 gap-6">
             <div className="glass-panel p-6 hover-glow transition-all duration-300 transform hover:scale-105">
               <div className="flex items-center mb-4">
-                <Eye className="h-6 w-6 text-purple-500 mr-2" />
+                <Eye className="h-6 w-6 text-orange-500 mr-2" />
                 <h3 className="text-lg font-semibold">Token Analytics</h3>
               </div>
               <p className="text-gray-400">Click any token to view detailed metrics and discover the top 20 traders by win rate.</p>
             </div>
             <div className="glass-panel p-6 hover-glow transition-all duration-300 transform hover:scale-105">
               <div className="flex items-center mb-4">
-                <Zap className="h-6 w-6 text-purple-500 mr-2" />
+                <Zap className="h-6 w-6 text-orange-500 mr-2" />
                 <h3 className="text-lg font-semibold">Trader Insights</h3>
               </div>
               <p className="text-gray-400">Analyze any wallet's trading history, performance metrics, and token positions.</p>
             </div>
             <div className="glass-panel p-6 hover-glow transition-all duration-300 transform hover:scale-105">
               <div className="flex items-center mb-4">
-                <BarChart3 className="h-6 w-6 text-purple-500 mr-2" />
+                <BarChart3 className="h-6 w-6 text-orange-500 mr-2" />
                 <h3 className="text-lg font-semibold">Market Intelligence</h3>
               </div>
               <p className="text-gray-400">Track market trends and identify opportunities with AI-powered analytics.</p>
@@ -567,7 +562,7 @@ function App() {
 
           <div className="glass-panel p-6">
             <h2 className="text-2xl font-semibold text-white mb-6 flex items-center">
-              <TrendingUp className="h-6 w-6 text-purple-500 mr-2" />
+              <TrendingUp className="h-6 w-6 text-orange-500 mr-2" />
               {searchQuery ? (isWalletView ? 'Wallet Analytics' : 'Search Results') : (
                 <div className="flex flex-col">
                   <span>Recently Graduated Tokens</span>
@@ -586,7 +581,7 @@ function App() {
             
             {isLoading ? (
               <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
                 <p className="text-gray-400 mt-4">Loading data...</p>
               </div>
             ) : isWalletView && walletStats ? (
@@ -625,7 +620,7 @@ function App() {
 
           <div className="glass-panel p-6">
             <h2 className="text-2xl font-semibold text-white mb-6 flex items-center">
-              <TrendingUp className="h-6 w-6 text-purple-500 mr-2" />
+              <TrendingUp className="h-6 w-6 text-orange-500 mr-2" />
               Solana Price Chart
             </h2>
             <SolanaChart />
@@ -633,8 +628,9 @@ function App() {
 
           <div className="glass-panel p-8">
             <div className="text-center mb-12">
+              
               <h2 className="text-4xl font-bold text-white mb-4 flex items-center justify-center">
-                <Rocket className="h-10 w-10 text-purple-500 mr-3" />
+                <Rocket className="h-10 w-10 text-orange-500 mr-3" />
                 Vision & Roadmap
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-lg">
@@ -644,23 +640,23 @@ function App() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="glass-panel p-8 hover-glow relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative z-10">
-                  <div className="h-12 w-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6">
-                    <Check className="h-6 w-6 text-purple-500" />
+                  <div className="h-12 w-12 bg-orange-500/10 rounded-xl flex items-center justify-center mb-6">
+                    <Check className="h-6 w-6 text-orange-500" />
                   </div>
                   <h3 className="text-xl font-semibold mb-4">Phase 1: Foundation</h3>
                   <ul className="space-y-3 text-gray-400">
                     <li className="flex items-center">
-                      <span className="text-purple-500 mr-2">✓</span>
+                      <span className="text-orange-500 mr-2">✓</span>
                       Launch Analytics Platform
                     </li>
                     <li className="flex items-center">
-                      <span className="text-purple-500 mr-2">✓</span>
+                      <span className="text-orange-500 mr-2">✓</span>
                       Real-time PNL Tracking
                     </li>
                     <li className="flex items-center">
-                      <span className="text-purple-500 mr-2">✓</span>
+                      <span className="text-orange-500 mr-2">✓</span>
                       Token Performance Metrics
                     </li>
                   </ul>
@@ -668,23 +664,23 @@ function App() {
               </div>
 
               <div className="glass-panel p-8 hover-glow relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative z-10">
-                  <div className="h-12 w-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6">
-                    <Target className="h-6 w-6 text-purple-500" />
+                  <div className="h-12 w-12 bg-orange-500/10 rounded-xl flex items-center justify-center mb-6">
+                    <Target className="h-6 w-6 text-orange-500" />
                   </div>
                   <h3 className="text-xl font-semibold mb-4">Phase 2: Advanced Tools</h3>
                   <ul className="space-y-3 text-gray-400">
                     <li className="flex items-center">
-                      <span className="text-purple-500 mr-2">→</span>
+                      <span className="text-orange-500 mr-2">→</span>
                       Smart Wallet Tracking
                     </li>
                     <li className="flex items-center">
-                      <span className="text-purple-500 mr-2">→</span>
+                      <span className="text-orange-500 mr-2">→</span>
                       AI-Powered Insights
                     </li>
                     <li className="flex items-center">
-                      <span className="text-purple-500 mr-2">→</span>
+                      <span className="text-orange-500 mr-2">→</span>
                       Portfolio Analytics
                     </li>
                   </ul>
@@ -692,23 +688,23 @@ function App() {
               </div>
 
               <div className="glass-panel p-8 hover-glow relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative z-10">
-                  <div className="h-12 w-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6">
-                    <Zap className="h-6 w-6 text-purple-500" />
+                  <div className="h-12 w-12 bg-orange-500/10 rounded-xl flex items-center justify-center mb-6">
+                    <Zap className="h-6 w-6 text-orange-500" />
                   </div>
                   <h3 className="text-xl font-semibold mb-4">Phase 3: Ecosystem</h3>
                   <ul className="space-y-3 text-gray-400">
                     <li className="flex items-center">
-                      <span className="text-purple-500 mr-2">→</span>
+                      <span className="text-orange-500 mr-2">→</span>
                       Trading Signals
                     </li>
                     <li className="flex items-center">
-                      <span className="text-purple-500 mr-2">→</span>
+                      <span className="text-orange-500 mr-2">→</span>
                       Community Features
                     </li>
                     <li className="flex items-center">
-                      <span className="text-purple-500 mr-2">→</span>
+                      <span className="text-orange-500 mr-2">→</span>
                       Mobile Application
                     </li>
                   </ul>
@@ -721,7 +717,7 @@ function App() {
                 href="https://x.com/solpnltracker"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center text-purple-500 hover:text-purple-400 transition-colors font-bold"
+                className="inline-flex items-center text-orange-500 hover:text-orange-400 transition-colors font-bold"
               >
                 <Twitter className="h-6 w-6 mr-2 stroke-[2.5]" />
                 Follow us on X (Twitter)

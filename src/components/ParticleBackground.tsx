@@ -34,18 +34,18 @@ export function ParticleBackground() {
 
     const createParticles = () => {
       const particles: Particle[] = [];
-      const particleCount = Math.min(Math.floor(window.innerWidth * 0.05), 100); // Increased particle count
-      const colors = ['#9333EA', '#A855F7', '#7E22CE'];
+      const particleCount = Math.min(Math.floor(window.innerWidth * 0.05), 100);
+      const colors = ['#FF8C00', '#FFA500', '#FF7F50'];
 
       for (let i = 0; i < particleCount; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.3, // Increased velocity
-          vy: (Math.random() - 0.5) * 0.3, // Increased velocity
-          size: Math.random() * 3 + 1, // Increased particle size
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          size: Math.random() * 3 + 1,
           color: colors[Math.floor(Math.random() * colors.length)],
-          alpha: Math.random() * 0.5 + 0.2 // Increased opacity
+          alpha: Math.random() * 0.5 + 0.2
         });
       }
 
@@ -62,8 +62,8 @@ export function ParticleBackground() {
 
     const connectParticles = (particles: Particle[]) => {
       if (!ctx) return;
-      const maxDistance = 150; // Increased connection distance
-      const mouseInfluenceRadius = 200; // Increased mouse influence
+      const maxDistance = 150;
+      const mouseInfluenceRadius = 200;
 
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -72,17 +72,16 @@ export function ParticleBackground() {
           const distance = Math.sqrt(dx * dx + dy * dy);
 
           if (distance < maxDistance) {
-            const opacity = (1 - distance / maxDistance) * 0.25; // Increased line opacity
+            const opacity = (1 - distance / maxDistance) * 0.25;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
             ctx.strokeStyle = `${particles[i].color}${Math.floor(opacity * 255).toString(16).padStart(2, '0')}`;
-            ctx.lineWidth = 1.5; // Increased line width
+            ctx.lineWidth = 1.5;
             ctx.stroke();
           }
         }
 
-        // Mouse influence
         const dx = particles[i].x - mouseRef.current.x;
         const dy = particles[i].y - mouseRef.current.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -90,9 +89,9 @@ export function ParticleBackground() {
         if (distance < mouseInfluenceRadius) {
           const force = (mouseInfluenceRadius - distance) / mouseInfluenceRadius;
           const angle = Math.atan2(dy, dx);
-          particles[i].vx += Math.cos(angle) * force * 0.2; // Increased force
+          particles[i].vx += Math.cos(angle) * force * 0.2;
           particles[i].vy += Math.sin(angle) * force * 0.2;
-          particles[i].alpha = Math.min(0.6, particles[i].alpha + force * 0.1); // Increased max opacity
+          particles[i].alpha = Math.min(0.6, particles[i].alpha + force * 0.1);
         } else {
           particles[i].alpha = Math.max(0.2, particles[i].alpha - 0.005);
         }
@@ -108,21 +107,18 @@ export function ParticleBackground() {
         particle.x += particle.vx;
         particle.y += particle.vy;
 
-        // Bounce off edges with some randomness
         if (particle.x < 0 || particle.x > window.innerWidth) {
           particle.vx *= -1;
-          particle.vx += (Math.random() - 0.5) * 0.2; // Increased randomness
+          particle.vx += (Math.random() - 0.5) * 0.2;
         }
         if (particle.y < 0 || particle.y > window.innerHeight) {
           particle.vy *= -1;
           particle.vy += (Math.random() - 0.5) * 0.2;
         }
 
-        // Apply slight random movement
         particle.vx += (Math.random() - 0.5) * 0.02;
         particle.vy += (Math.random() - 0.5) * 0.02;
 
-        // Apply friction
         particle.vx *= 0.99;
         particle.vy *= 0.99;
 
@@ -165,7 +161,7 @@ export function ParticleBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-0 pointer-events-none opacity-70" // Increased opacity
+      className="fixed inset-0 z-0 pointer-events-none opacity-70"
       style={{ background: 'transparent' }}
     />
   );
