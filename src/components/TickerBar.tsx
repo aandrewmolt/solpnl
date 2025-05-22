@@ -27,7 +27,6 @@ export function TickerBar({ tokens, onTokenClick }: TickerBarProps) {
         const containerWidth = containerRef.current?.offsetWidth || 0;
         const contentWidth = (containerRef.current?.firstChild as HTMLElement)?.offsetWidth || 0;
         
-        // If we've scrolled past the first set of tokens, reset to show them again
         if (newPos <= -contentWidth / 2) {
           return 0;
         }
@@ -39,12 +38,11 @@ export function TickerBar({ tokens, onTokenClick }: TickerBarProps) {
     return () => clearInterval(interval);
   }, []);
 
-  // Duplicate tokens array to ensure continuous scrolling
   const displayTokens = [...tokens, ...tokens];
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 h-12 bg-black/50 backdrop-blur-lg border-b-2 border-purple-500/30 z-50 overflow-hidden">
+      <div className="fixed top-0 left-0 right-0 h-12 bg-black/50 backdrop-blur-lg border-b-2 border-orange-500/30 z-50 overflow-hidden">
         <div ref={containerRef} className="h-full relative">
           <div 
             className="absolute top-0 flex items-center h-full whitespace-nowrap"
@@ -54,10 +52,10 @@ export function TickerBar({ tokens, onTokenClick }: TickerBarProps) {
               <button
                 key={`${token.mint}-${i}`}
                 onClick={() => onTokenClick(token)}
-                className="px-4 py-2 flex items-center space-x-3 hover:bg-purple-500/10 transition-colors"
+                className="px-4 py-2 flex items-center space-x-3 hover:bg-orange-500/10 transition-colors"
               >
                 <span className="font-medium text-white">{token.symbol}</span>
-                <span className={`${token.priceChange24h >= 0 ? 'text-purple-500' : 'text-[#FF00FF]'}`}>
+                <span className={`${token.priceChange24h >= 0 ? 'text-orange-500' : 'text-[#FF00FF]'}`}>
                   {token.priceChange24h >= 0 ? '+' : ''}{token.priceChange24h.toFixed(2)}%
                 </span>
               </button>
@@ -66,7 +64,7 @@ export function TickerBar({ tokens, onTokenClick }: TickerBarProps) {
         </div>
       </div>
 
-      <div className="h-12" /> {/* Spacer for fixed header */}
+      <div className="h-12" />
     </>
   );
 }

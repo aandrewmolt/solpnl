@@ -51,7 +51,6 @@ export function TokenTable({ tokens, topTraders: initialTopTraders, onWalletClic
 
         const tradersData = await tradersResponse.json();
         
-        // Ensure tradersData exists and is an array
         const traders = Array.isArray(tradersData) ? tradersData : (Array.isArray(tradersData.data) ? tradersData.data : []);
         
         if (traders.length === 0) {
@@ -59,7 +58,6 @@ export function TokenTable({ tokens, topTraders: initialTopTraders, onWalletClic
           return;
         }
 
-        // Fetch PNL data for each trader
         const tradersWithWinRate = await Promise.all(
           traders.slice(0, 20).map(async (trader: TopTrader) => {
             try {
@@ -104,7 +102,6 @@ export function TokenTable({ tokens, topTraders: initialTopTraders, onWalletClic
           })
         );
 
-        // Filter out traders with no trades and sort by win rate
         const activeTraders = tradersWithWinRate
           .filter(trader => (trader.totalTrades || 0) > 0)
           .sort((a, b) => (b.winPercentage || 0) - (a.winPercentage || 0));
@@ -155,7 +152,7 @@ export function TokenTable({ tokens, topTraders: initialTopTraders, onWalletClic
               <tr
                 key={token.mint || index}
                 onClick={() => handleTokenClick(token)}
-                className="hover:bg-purple-500/10 cursor-pointer transition-all duration-300"
+                className="hover:bg-orange-500/10 cursor-pointer transition-all duration-300"
               >
                 <td className="px-6 py-4 whitespace-nowrap w-32 min-w-[8rem] md:w-auto">
                   <div className="flex items-center">
@@ -174,7 +171,7 @@ export function TokenTable({ tokens, topTraders: initialTopTraders, onWalletClic
                   <div className="text-sm text-white">{formatPrice(token.price, 6)}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`text-sm font-bold ${token.priceChange24h >= 0 ? 'text-purple-500' : 'text-[#FF00FF]'}`}>
+                  <span className={`text-sm font-bold ${token.priceChange24h >= 0 ? 'text-orange-500' : 'text-[#FF00FF]'}`}>
                     {token.priceChange24h >= 0 ? '+' : ''}{formatNumber(token.priceChange24h)}%
                   </span>
                 </td>
@@ -193,7 +190,7 @@ export function TokenTable({ tokens, topTraders: initialTopTraders, onWalletClic
                 href={`https://solscan.io/token/${selectedToken?.mint}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-purple-500 hover:text-purple-400"
+                className="text-orange-500 hover:text-orange-400"
               >
                 <ExternalLink className="h-4 w-4" />
               </a>
@@ -203,7 +200,7 @@ export function TokenTable({ tokens, topTraders: initialTopTraders, onWalletClic
           <div className="mt-4 overflow-y-auto max-h-[60vh]">
             {isLoadingTraders ? (
               <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
                 <p className="text-gray-400 mt-4">Loading top traders...</p>
               </div>
             ) : error ? (
@@ -212,7 +209,7 @@ export function TokenTable({ tokens, topTraders: initialTopTraders, onWalletClic
               </div>
             ) : topTraders.length === 0 ? (
               <div className="text-center py-12 space-y-4">
-                <AlertCircle className="h-12 w-12 text-purple-500 mx-auto" />
+                <AlertCircle className="h-12 w-12 text-orange-500 mx-auto" />
                 <div>
                   <p className="text-lg font-semibold text-white">No Recent Trading Activity</p>
                   <p className="text-gray-400 mt-2">
@@ -242,15 +239,15 @@ export function TokenTable({ tokens, topTraders: initialTopTraders, onWalletClic
                     <tr 
                       key={trader.wallet}
                       onClick={() => onWalletClick(trader.wallet)}
-                      className="hover:bg-purple-500/10 cursor-pointer transition-all duration-300"
+                      className="hover:bg-orange-500/10 cursor-pointer transition-all duration-300"
                     >
                       <td className="px-6 py-4 whitespace-nowrap w-32 min-w-[8rem] md:w-auto">
-                        <span className="text-purple-500 hover:text-purple-400">
+                        <span className="text-orange-500 hover:text-orange-400">
                           {formatAddress(trader.wallet)}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`font-bold ${trader.total >= 0 ? 'text-purple-500' : 'text-[#FF00FF]'}`}>
+                        <span className={`font-bold ${trader.total >= 0 ? 'text-orange-500' : 'text-[#FF00FF]'}`}>
                           {formatPrice(trader.total)}
                         </span>
                       </td>
