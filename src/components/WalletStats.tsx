@@ -59,9 +59,9 @@ export function WalletStats({ stats, onWalletClick }: WalletStatsProps) {
         <div className="glass-panel p-6 hover-glow">
           <div className="flex items-center justify-between">
             <h3 className="text-gray-400">Total PNL</h3>
-            <DollarSign className="h-5 w-5 text-purple-500" />
+            <DollarSign className="h-5 w-5 text-orange-500" />
           </div>
-          <p className={`text-2xl font-bold ${summary.total >= 0 ? 'text-purple-500' : 'text-[#FF00FF]'}`}>
+          <p className={`text-2xl font-bold ${summary.total >= 0 ? 'text-orange-500' : 'text-[#FF00FF]'}`}>
             {formatPrice(summary.total)}
           </p>
         </div>
@@ -69,9 +69,9 @@ export function WalletStats({ stats, onWalletClick }: WalletStatsProps) {
         <div className="glass-panel p-6 hover-glow">
           <div className="flex items-center justify-between">
             <h3 className="text-gray-400">Win Rate</h3>
-            <TrendingUp className="h-5 w-5 text-purple-500" />
+            <TrendingUp className="h-5 w-5 text-orange-500" />
           </div>
-          <p className="text-2xl font-bold text-purple-500">
+          <p className="text-2xl font-bold text-orange-500">
             {formatNumber(summary.winPercentage)}%
           </p>
         </div>
@@ -79,9 +79,9 @@ export function WalletStats({ stats, onWalletClick }: WalletStatsProps) {
         <div className="glass-panel p-6 hover-glow">
           <div className="flex items-center justify-between">
             <h3 className="text-gray-400">Realized PNL</h3>
-            <ArrowUpRight className="h-5 w-5 text-purple-500" />
+            <ArrowUpRight className="h-5 w-5 text-orange-500" />
           </div>
-          <p className={`text-2xl font-bold ${summary.realized >= 0 ? 'text-purple-500' : 'text-[#FF00FF]'}`}>
+          <p className={`text-2xl font-bold ${summary.realized >= 0 ? 'text-orange-500' : 'text-[#FF00FF]'}`}>
             {formatPrice(summary.realized)}
           </p>
         </div>
@@ -89,22 +89,22 @@ export function WalletStats({ stats, onWalletClick }: WalletStatsProps) {
         <div className="glass-panel p-6 hover-glow">
           <div className="flex items-center justify-between">
             <h3 className="text-gray-400">Unrealized PNL</h3>
-            <ArrowDownRight className="h-5 w-5 text-purple-500" />
+            <ArrowDownRight className="h-5 w-5 text-orange-500" />
           </div>
-          <p className={`text-2xl font-bold ${summary.unrealized >= 0 ? 'text-purple-500' : 'text-[#FF00FF]'}`}>
+          <p className={`text-2xl font-bold ${summary.unrealized >= 0 ? 'text-orange-500' : 'text-[#FF00FF]'}`}>
             {formatPrice(summary.unrealized)}
           </p>
         </div>
       </div>
 
-      <div className="glass-panel overflow-hidden border-2 border-purple-500/30">
-        <div className="bg-black/50 backdrop-blur-lg border-b-2 border-purple-500/30">
+      <div className="glass-panel overflow-hidden border-2 border-orange-500/30">
+        <div className="bg-black/50 backdrop-blur-lg border-b-2 border-orange-500/30">
           <h3 className="text-lg font-semibold p-4">Token Positions</h3>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-purple-500/30">
+          <table className="min-w-full divide-y divide-orange-500/30">
             <thead className="bg-black/50 backdrop-blur-lg">
-              <tr className="border-b-2 border-purple-500/30">
+              <tr className="border-b-2 border-orange-500/30">
                 <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-24 sm:w-32 md:w-auto">Token</th>
                 <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Total PNL</th>
                 <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Realized</th>
@@ -113,9 +113,9 @@ export function WalletStats({ stats, onWalletClick }: WalletStatsProps) {
                 <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Total Invested</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-purple-500/20">
+            <tbody className="divide-y divide-orange-500/20">
               {sortedTokens.map(([address, token]) => (
-                <tr key={address} className="hover:bg-purple-500/10 transition-all duration-300">
+                <tr key={address} className="hover:bg-orange-500/10 transition-all duration-300">
                   <td className="px-6 py-4 whitespace-nowrap w-24 sm:w-32 md:w-auto">
                     <div className="text-sm">
                       <div className="flex items-center space-x-2">
@@ -127,7 +127,7 @@ export function WalletStats({ stats, onWalletClick }: WalletStatsProps) {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="text-purple-500 hover:text-purple-400"
+                          className="text-orange-500 hover:text-orange-400"
                         >
                           <ExternalLink className="h-4 w-4" />
                         </a>
@@ -136,11 +136,11 @@ export function WalletStats({ stats, onWalletClick }: WalletStatsProps) {
                         <span className="text-gray-400">{formatAddress(address)}</span>
                         <button
                           onClick={(e) => handleCopy(address, e)}
-                          className="text-gray-400 hover:text-purple-400 transition-colors p-1 rounded-full hover:bg-gray-600"
+                          className="text-gray-400 hover:text-orange-400 transition-colors p-1 rounded-full hover:bg-gray-600"
                           title="Copy token address"
                         >
                           {copiedAddress === address ? (
-                            <Check className="h-4 w-4 text-purple-400" />
+                            <Check className="h-4 w-4 text-orange-400" />
                           ) : (
                             <Copy className="h-4 w-4" />
                           )}
@@ -149,7 +149,7 @@ export function WalletStats({ stats, onWalletClick }: WalletStatsProps) {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`font-bold ${token.total >= 0 ? 'text-purple-500' : 'text-[#FF00FF]'}`}>
+                    <span className={`font-bold ${token.total >= 0 ? 'text-orange-500' : 'text-[#FF00FF]'}`}>
                       {formatPrice(token.total)}
                     </span>
                   </td>

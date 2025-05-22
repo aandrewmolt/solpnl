@@ -6,6 +6,13 @@ import { ParticleBackground } from './components/ParticleBackground';
 import { SolanaChart } from './components/SolanaChart';
 import { TickerBar } from './components/TickerBar';
 
+// Cache management
+const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
+const cache = {
+  tokens: { data: null, timestamp: 0 },
+  traders: { data: {}, timestamp: 0 }
+};
+
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [trendingTokens, setTrendingTokens] = useState([]);
@@ -31,6 +38,15 @@ function App() {
     setTopTraders(null);
 
     try {
+      // Check cache first
+      const now = Date.now();
+      if (cache.traders[token.mint] && 
+          now - cache.traders[token.mint].timestamp < CACHE_DURATION) {
+        setTopTraders(cache.traders[token.mint].data);
+        setIsLoading(false);
+        return;
+      }
+
       const tradersResponse = await fetch(`https://data.solanatracker.io/top-traders/${token.mint}`, {
         headers: {
           'x-api-key': '7f9707ad-e94b-4a13-b7c9-65e48572c79b'
@@ -53,6 +69,12 @@ function App() {
         })
         .sort((a, b) => b.winRate - a.winRate)
         .slice(0, 20);
+
+      // Update cache
+      cache.traders[token.mint] = {
+        data: processedTraders,
+        timestamp: now
+      };
 
       setTopTraders(processedTraders);
       setError(null);
@@ -502,12 +524,17 @@ function App() {
               className="flex items-center hover:opacity-80 transition-opacity"
             >
               <img 
-                src="/walletiq.png"
+                src="/ChatGPT_Image_May_22__2025__03_50_14_AM-removebg-preview.png"
                 alt="Wallet IQ Logo"
                 className="h-14 w-14 text-orange-600 mr-3 -mt-1"
               />
-              <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-500 to-orange-700">
-                Wallet IQ
+              <h1 className="text-5xl font-bold">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-500 to-orange-700">
+                  Wallet
+                </span>
+                <span className="text-white">
+                  {' '}IQ
+                </span>
               </h1>
             </button>
           </div>
@@ -611,7 +638,6 @@ function App() {
                     >
                       {isLoading ? 'Loading...' : 'Load More Tokens'}
                     </button>
-                  
                   </div>
                 )}
               </>
@@ -628,8 +654,6 @@ function App() {
 
           <div className="glass-panel p-8">
             <div className="text-center mb-12">
-              
-              
               <h2 className="text-4xl font-bold text-white mb-4 flex items-center justify-center">
                 <Rocket className="h-10 w-10 text-orange-500 mr-3" />
                 Vision & Roadmap
