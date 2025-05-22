@@ -6,6 +6,12 @@ import { ParticleBackground } from './components/ParticleBackground';
 import { SolanaChart } from './components/SolanaChart';
 import { TickerBar } from './components/TickerBar';
 
+const CACHE_DURATION = 30 * 60 * 1000;
+const cache = {
+  tokens: { data: null, timestamp: 0 },
+  traders: { data: {}, timestamp: {} }
+};
+
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [trendingTokens, setTrendingTokens] = useState([]);
@@ -30,6 +36,14 @@ function App() {
     setError('');
     setTopTraders(null);
 
+    const now = Date.now();
+    if (cache.traders.data[token.mint] && 
+        now - cache.traders.timestamp[token.mint] < CACHE_DURATION) {
+      setTopTraders(cache.traders.data[token.mint]);
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const tradersResponse = await fetch(`https://data.solanatracker.io/top-traders/${token.mint}`, {
         headers: {
@@ -53,6 +67,9 @@ function App() {
         })
         .sort((a, b) => b.winRate - a.winRate)
         .slice(0, 20);
+
+      cache.traders.data[token.mint] = processedTraders;
+      cache.traders.timestamp[token.mint] = now;
 
       setTopTraders(processedTraders);
       setError(null);
@@ -381,6 +398,16 @@ function App() {
   };
 
   const fetchGraduatedTokens = async (offset = 0) => {
+    const now = Date.now();
+    if (offset === 0 && cache.tokens.data && 
+        now - cache.tokens.timestamp < CACHE_DURATION) {
+      const paginatedData = cache.tokens.data.slice(offset, offset + 20);
+      setHasMoreGraduated(cache.tokens.data.length > offset + 20);
+      setTrendingTokens(paginatedData);
+      setIsLoading(false);
+      return;
+    }
+
     try {
       setIsLoading(true);
       
@@ -423,6 +450,11 @@ function App() {
               marketCap: item.pools?.[0]?.marketCap?.usd || 0,
               priceChange24h: item.events?.['24h']?.priceChangePercentage || 0
             }));
+
+          if (offset === 0) {
+            cache.tokens.data = transformedData;
+            cache.tokens.timestamp = now;
+          }
 
           const paginatedData = transformedData.slice(offset, offset + 20);
           setHasMoreGraduated(transformedData.length > offset + 20);
@@ -504,7 +536,7 @@ function App() {
               <img 
                 src="/ChatGPT_Image_May_22__2025__03_50_14_AM-removebg-preview.png"
                 alt="Wallet IQ Logo"
-                className="h-14 w-14 text-orange-600 mr-3 -mt-1"
+                className="h-20 w-20 text-orange-600 mr-3 -mt-1"
               />
               <h1 className="text-5xl font-bold">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-500 to-orange-700">
@@ -595,7 +627,8 @@ function App() {
                 {hasMoreTokens && (
                   <div className="text-center mt-6">
                     <button
-                      onClick={handleLoadMoreWalletTokens}
+                      onClick={handleLoadMoreWal
+letTokens}
                       className="glass-button px-6 py-3 text-white font-medium"
                       disabled={isLoading}
                     >
@@ -616,7 +649,6 @@ function App() {
                     >
                       {isLoading ? 'Loading...' : 'Load More Tokens'}
                     </button>
-                  
                   </div>
                 )}
               </>
@@ -625,7 +657,7 @@ function App() {
 
           <div className="glass-panel p-6">
             <h2 className="text-2xl font-semibold text-white mb-6 flex items-center">
-              <TrendingUp className="h-6 w-6 text-orange-500  mr-2" />
+              <TrendingUp className="h-6 w-6 text-orange-500 mr-2" />
               Solana Price Chart
             </h2>
             <SolanaChart />
