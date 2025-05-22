@@ -32,7 +32,7 @@ export function SolanaChart() {
       try {
         // Generate sample data since the API is not available
         const sampleData = [];
-        const basePrice = 108.50; // Current SOL price as of March 2024
+        const basePrice = 143.50; // Updated SOL price as of March 2024
         const volatility = 0.02; // 2% daily volatility
         
         for (let i = 13; i >= 0; i--) {
@@ -40,7 +40,7 @@ export function SolanaChart() {
           date.setDate(date.getDate() - i);
           
           // Generate realistic price movements with trending
-          const trend = i * 0.2; // Slight upward trend
+          const trend = i * 0.3; // Slight upward trend
           const randomChange = (Math.random() - 0.5) * 2 * volatility * basePrice;
           const price = basePrice + randomChange + trend;
           
@@ -57,7 +57,7 @@ export function SolanaChart() {
         const staticData = Array(14).fill(0).map((_, i) => ({
           date: new Date(Date.now() - (13 - i) * 24 * 60 * 60 * 1000)
             .toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-          price: 108.50
+          price: 143.50
         }));
         setPriceData(staticData);
       } finally {
@@ -75,7 +75,7 @@ export function SolanaChart() {
   if (isLoading) {
     return (
       <div className="h-[400px] w-full flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
       </div>
     );
   }
@@ -87,12 +87,12 @@ export function SolanaChart() {
         label: 'SOL Price',
         data: priceData.map(d => d.price),
         fill: true,
-        borderColor: '#9333EA',
-        backgroundColor: 'rgba(147, 51, 234, 0.1)',
+        borderColor: '#ff8c00',
+        backgroundColor: 'rgba(255, 140, 0, 0.1)',
         tension: 0.4,
         pointRadius: 0,
         pointHoverRadius: 8,
-        pointHoverBackgroundColor: '#9333EA',
+        pointHoverBackgroundColor: '#ff8c00',
         pointHoverBorderColor: '#fff',
         pointHoverBorderWidth: 3,
         borderWidth: 6
@@ -113,7 +113,7 @@ export function SolanaChart() {
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         titleColor: '#fff',
         bodyColor: '#fff',
-        borderColor: 'rgba(147, 51, 234, 0.2)',
+        borderColor: 'rgba(255, 140, 0, 0.2)',
         borderWidth: 1,
         padding: 12,
         displayColors: false,
