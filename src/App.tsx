@@ -11,3 +11,5 @@ const twitterUrl = "https://x.com/walletiqpro";
   <Twitter className="h-6 w-6 mr-2 stroke-[2.5]" />
   Follow us on X (Twitter)
 </a>
+
+export default twitterUrl
