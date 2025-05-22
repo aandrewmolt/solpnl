@@ -58,7 +58,7 @@
 }
 
 .negative-value {
-  @apply text-[#FF4500] font-normal;
+  @apply text-orange-700 font-normal;
 }
 
 .positive-value {

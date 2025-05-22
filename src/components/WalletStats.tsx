@@ -61,7 +61,7 @@ export function WalletStats({ stats, onWalletClick }: WalletStatsProps) {
             <h3 className="text-gray-400">Total PNL</h3>
             <DollarSign className="h-5 w-5 text-orange-500" />
           </div>
-          <p className={`text-2xl font-bold ${summary.total >= 0 ? 'text-orange-500' : 'text-[#FF00FF]'}`}>
+          <p className={`text-2xl font-bold ${summary.total >= 0 ? 'text-orange-500' : 'text-orange-700'}`}>
             {formatPrice(summary.total)}
           </p>
         </div>
@@ -81,7 +81,7 @@ export function WalletStats({ stats, onWalletClick }: WalletStatsProps) {
             <h3 className="text-gray-400">Realized PNL</h3>
             <ArrowUpRight className="h-5 w-5 text-orange-500" />
           </div>
-          <p className={`text-2xl font-bold ${summary.realized >= 0 ? 'text-orange-500' : 'text-[#FF00FF]'}`}>
+          <p className={`text-2xl font-bold ${summary.realized >= 0 ? 'text-orange-500' : 'text-orange-700'}`}>
             {formatPrice(summary.realized)}
           </p>
         </div>
@@ -91,7 +91,7 @@ export function WalletStats({ stats, onWalletClick }: WalletStatsProps) {
             <h3 className="text-gray-400">Unrealized PNL</h3>
             <ArrowDownRight className="h-5 w-5 text-orange-500" />
           </div>
-          <p className={`text-2xl font-bold ${summary.unrealized >= 0 ? 'text-orange-500' : 'text-[#FF00FF]'}`}>
+          <p className={`text-2xl font-bold ${summary.unrealized >= 0 ? 'text-orange-500' : 'text-orange-700'}`}>
             {formatPrice(summary.unrealized)}
           </p>
         </div>
@@ -149,7 +149,7 @@ export function WalletStats({ stats, onWalletClick }: WalletStatsProps) {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`font-bold ${token.total >= 0 ? 'text-orange-500' : 'text-[#FF00FF]'}`}>
+                    <span className={`font-bold ${token.total >= 0 ? 'text-orange-500' : 'text-orange-700'}`}>
                       {formatPrice(token.total)}
                     </span>
                   </td>
