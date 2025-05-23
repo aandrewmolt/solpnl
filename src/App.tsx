@@ -506,7 +506,7 @@ function App() {
                 className="h-20 w-20 text-orange-600 mr-3 -mt-1"
               />
               <h1 className="text-5xl font-bold">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-500 to-orange-700">
+                <span style={{ color: '#fba743' }}>
                   Wallet
                 </span>
                 <span className="text-white">
